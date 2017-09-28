@@ -1,0 +1,59 @@
+<openerp>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="payment_cost.list">
+      <field name="name">payment_cost list</field>
+      <field name="model">payment_cost.payment_cost</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="payment_cost.action_window">
+      <field name="name">payment_cost window</field>
+      <field name="res_model">payment_cost.payment_cost</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="payment_cost.action_server">
+      <field name="name">payment_cost server</field>
+      <field name="model_id" ref="model_payment_cost_payment_cost"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="payment_cost" id="payment_cost.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="payment_cost.menu_1" parent="payment_cost.menu_root"/>
+    <menuitem name="Menu 2" id="payment_cost.menu_2" parent="payment_cost.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="payment_cost.menu_1_list" parent="payment_cost.menu_1"
+              action="payment_cost.action_window"/>
+    <menuitem name="Server to list" id="payment_cost" parent="payment_cost.menu_2"
+              action="payment_cost.action_server"/>
+    -->
+  </data>
+</openerp>
