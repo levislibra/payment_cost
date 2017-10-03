@@ -11,7 +11,8 @@ class payment_cost(models.Model):
 	cost_journal_id = fields.Many2one('account.journal', 'Diario')
 	cost_percentage = fields.Float('Porcentaje del monto')
 	cost_amount = fields.Float('Monto del costo', compute="_value_cost_amount")
-	cost_move_id = fields.Many2one('account.move', default=None)
+	cost_move_id = fields.Many2one('account.move', 'Asiento del costo', default=None)
+	cost_move_boolean = fields.Boolean(default=False)
 
 	@api.depends('cost_percentage')
 	def _value_cost_amount(self):
@@ -19,8 +20,17 @@ class payment_cost(models.Model):
 			self.cost_amount = self.amount * (self.cost_percentage / 100)
 
 	@api.one
+	def copy(self, default=None):
+		default = dict(default or {})
+		default.update({
+			'cost_move_id': None,
+			'cost_move_boolean': False,
+		})
+		return super(payment_cost, self).copy(default)
+
+	@api.one
 	def confirm_cost(self):
-		if self.payment_cost == True and self.state != 'osted' and len(self.cost_move_id) == 0:
+		if self.payment_cost == True and self.state == 'posted' and len(self.cost_move_id) == 0:
 			line_ids = []
 			if self.payment_type == "outbound" or self.payment_type == "transfer":
 				# Cuando realizamos el pago a un proveedor o una transferencia interna
@@ -92,4 +102,5 @@ class payment_cost(models.Model):
 			})
 			move.name = move_name + str(move.id)
 			move.state = 'posted'
-			self.cost_move_id = move
+			self.cost_move_id = move.id
+			self.cost_move_boolean = True
