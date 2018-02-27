@@ -27,7 +27,7 @@
             </xpath>
             <xpath expr="//div[@name='amount_div']" position='after'>
                 <field name="payment_cost" attrs="{'readonly': [('state', '!=', 'draft')]}" />
-                <field name="cost_communication" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_cost', '=', False)]}" />
+                <field name="cost_communication" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_cost', '=', False)], 'required': [('payment_cost', '!=', False)]}" />
                 <field name="cost_journal_id" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_cost', '=', False)], 'required': [('payment_cost', '=', True)]}" />
                 <field name="cost_percentage" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_cost', '=', False)]}" />
                 <field name="cost_amount" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_cost', '=', False)], 'required': [('payment_cost', '=', True)]}" />
