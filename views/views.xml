@@ -26,7 +26,7 @@
                 <button name="confirm_cost" class="oe_highlight" string="Confirmar costo" type="object" attrs="{'invisible': ['|', ('payment_cost', '=', False), '|', ('cost_move_boolean', '=', True), ('state', '!=', 'posted')]}" />
             </xpath>
             <xpath expr="//div[@name='amount_div']" position='after'>
-                <field name="payment_cost" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': ['|', ('payment_type', '!=', 'outbound'), ('partner_type', '=', 'customer')]}" />
+                <field name="payment_cost" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': ['|', ('payment_type', '=', 'inbound'), ('partner_type', '=', 'customer')]}" />
                 <field name="payment_desc" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': ['|', ('payment_type', '!=', 'outbound'), ('partner_type', '=', 'supplier')]}" />
                 <field name="cost_communication" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_cost', '=', False)], 'required': [('payment_cost', '!=', False)]}" />
                 <field name="cost_journal_id" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('payment_cost', '=', False)], 'required': [('payment_cost', '=', True)]}" />

@@ -87,20 +87,93 @@ class payment_cost(models.Model):
 					}
 					line_ids.append((0,0,aml2))
 
+				# create move
+				company_id = self.env['res.users'].browse(self.env.uid).company_id.id
+				move_name = "COST/"
+				move = self.env['account.move'].create({
+				'name': move_name,
+				'date': self.payment_date,
+				'journal_id': self.cost_journal_id.id,
+				'state':'draft',
+				'company_id': company_id,
+				'partner_id': self.partner_id.id,
+				'line_ids': line_ids,
+				})
+				move.name = move_name + str(move.id)
+				move.state = 'posted'
+				self.cost_move_id = move.id
+				self.cost_move_boolean = True
+			
+			elif self.payment_type == "transfer":
+				currency_id = self.env.user.company_id.currency_id.id
+				transfer_account_id = self.env.user.company_id.transfer_account_id
+				# Transferencia interna - genera un costo
+				# Registramos el monto en el haber del driario al que transferimos
+				# costo
+				aml = {
+					'date': self.payment_date,
+					'account_id': self.destination_journal_id.default_debit_account_id.id,
+					'name': self.cost_communication,
+					'credit': self.cost_amount,
+					'journal_id': self.destination_journal_id.id,
+				}
+				line_ids.append((0,0,aml))
 
-			# create move
-			company_id = self.env['res.users'].browse(self.env.uid).company_id.id
-			move_name = "COST/"
-			move = self.env['account.move'].create({
-			'name': move_name,
-			'date': self.payment_date,
-			'journal_id': self.cost_journal_id.id,
-			'state':'draft',
-			'company_id': company_id,
-			'partner_id': self.partner_id.id,
-			'line_ids': line_ids,
-			})
-			move.name = move_name + str(move.id)
-			move.state = 'posted'
-			self.cost_move_id = move.id
-			self.cost_move_boolean = True
+				# Registramos el costo como gasto en el diario seleccionado
+				aml2 = {
+					'date': self.payment_date,
+					'account_id': transfer_account_id.id,
+					'name': self.cost_communication,
+					'debit': self.cost_amount,
+					'journal_id': self.destination_journal_id.id,
+				}
+				line_ids.append((0,0,aml2))
+				# create move
+				company_id = self.env['res.users'].browse(self.env.uid).company_id.id
+				move_name = "COST/"
+				move = self.env['account.move'].create({
+				'name': move_name,
+				'date': self.payment_date,
+				'journal_id': self.destination_journal_id.id,
+				'state':'draft',
+				'company_id': company_id,
+				'line_ids': line_ids,
+				})
+				move.name = move_name + str(move.id)
+				move.state = 'posted'
+				#self.cost_move_id = move.id
+				#self.cost_move_boolean = True
+				line_ids = []
+				aml = {
+					'date': self.payment_date,
+					'account_id': transfer_account_id.id,
+					'name': self.cost_communication,
+					'credit': self.cost_amount,
+					'journal_id': self.cost_journal_id.id,
+				}
+				line_ids.append((0,0,aml))
+
+				# Registramos el costo como gasto en el diario seleccionado
+				aml2 = {
+					'date': self.payment_date,
+					'account_id': self.cost_journal_id.default_debit_account_id.id,
+					'name': self.cost_communication,
+					'debit': self.cost_amount,
+					'journal_id': self.cost_journal_id.id,
+				}
+				line_ids.append((0,0,aml2))
+				# create move
+				company_id = self.env['res.users'].browse(self.env.uid).company_id.id
+				move_name = "COST/"
+				move = self.env['account.move'].create({
+				'name': move_name,
+				'date': self.payment_date,
+				'journal_id': self.cost_journal_id.id,
+				'state':'draft',
+				'company_id': company_id,
+				'line_ids': line_ids,
+				})
+				move.name = move_name + str(move.id)
+				move.state = 'posted'
+				self.cost_move_id = move.id
+				self.cost_move_boolean = True

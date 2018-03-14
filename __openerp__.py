@@ -3,11 +3,13 @@
     'name': "payment_cost",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Funcionalidad para generar un costo al enviar dinero.""",
 
     'description': """
-        Long description of module's purpose
+        Cuando enviamos dinero a un proveedor podemos generar un costo fijo o porcentaje
+        del monto enviado (gasto).
+        Cuando enviamos dinero a un cliente podemos generar un costo para la empresa, es
+        decir, un descuento al cliente.
     """,
 
     'author': "My Company",
